@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "es2019",
+        "module": "amd",
+        "lib": ["dom", "es2019"],
+        "jsx": "react",
+        "outFile": "docs/bundle.js",
+        "strict": true,
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "forceConsistentCasingInFileNames": true
+    }
+}
