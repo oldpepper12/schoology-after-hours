@@ -76,6 +76,9 @@ define("components/Post", ["require", "exports", "react", "prng"], function (req
             .toLocaleTimeString("en-US", { timeZone: "America/New_York", hour: "numeric", minute: "2-digit" })
             .toLowerCase();
     }
+    function pluralize(qty, singular, plural) {
+        return qty + " " + (qty === 1 ? singular : plural);
+    }
     class Post extends react_1.default.Component {
         constructor(props) {
             super(props);
@@ -101,7 +104,7 @@ define("components/Post", ["require", "exports", "react", "prng"], function (req
             for (let url of content.match(urlPattern) || []) {
                 content = content.replace(url, `<a href="${url}">${url}</a>`);
             }
-            return react_1.default.createElement("span", { dangerouslySetInnerHTML: { __html: content } });
+            return react_1.default.createElement("span", { dangerouslySetInnerHTML: { __html: content }, style: { whiteSpace: "pre-wrap" } });
         }
         renderPostContent() {
             let post = this.props.post;
@@ -133,9 +136,7 @@ define("components/Post", ["require", "exports", "react", "prng"], function (req
             }
             return (react_1.default.createElement("div", null,
                 react_1.default.createElement("span", { className: "hr" }),
-                react_1.default.createElement("span", { className: "post-info" },
-                    post.comments.length,
-                    " comments"),
+                react_1.default.createElement("span", { className: "post-info" }, pluralize(post.comments.length, "comment", "comments")),
                 post.comments.map((comment) => (react_1.default.createElement("div", { className: "comment" },
                     react_1.default.createElement("span", { className: "user-info comment-user-info" },
                         react_1.default.createElement("img", { src: this.getPfpFile(comment.user), className: " comment-user-pfp user-pfp" }),
@@ -154,8 +155,8 @@ define("components/Post", ["require", "exports", "react", "prng"], function (req
                 react_1.default.createElement("span", { className: "post-likes post-info" },
                     react_1.default.createElement("span", { className: "material-icons" }, "favorite"),
                     "\u00A0",
-                    post.likes,
-                    " people liked this",
+                    pluralize(post.likes, "person", "people"),
+                    " liked this",
                     react_1.default.createElement("span", { style: { opacity: "0.5" } },
                         "\u00A0\u2022 posted at ",
                         fmtTimeString(post.timestamp))),

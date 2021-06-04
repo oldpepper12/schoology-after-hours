@@ -18,6 +18,10 @@ function fmtTimeString(timestamp: string) {
         .toLowerCase();
 }
 
+function pluralize(qty: number, singular: string, plural: string) {
+    return qty + " " + (qty === 1 ? singular : plural);
+}
+
 export class Post extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
@@ -55,7 +59,7 @@ export class Post extends React.Component<IProps, IState> {
             content = content.replace(url, `<a href="${url}">${url}</a>`);
         }
 
-        return <span dangerouslySetInnerHTML={{ __html: content }}></span>;
+        return <span dangerouslySetInnerHTML={{ __html: content }} style={{ whiteSpace: "pre-wrap" }}></span>;
     }
 
     renderPostContent() {
@@ -108,7 +112,7 @@ export class Post extends React.Component<IProps, IState> {
         return (
             <div>
                 <span className="hr"></span>
-                <span className="post-info">{post.comments.length} comments</span>
+                <span className="post-info">{pluralize(post.comments.length, "comment", "comments")}</span>
                 {post.comments.map((comment) => (
                     <div className="comment">
                         <span className="user-info comment-user-info">
@@ -134,7 +138,7 @@ export class Post extends React.Component<IProps, IState> {
                 {this.renderPostContent()}
                 {this.renderAttachments()}
                 <span className="post-likes post-info">
-                    <span className="material-icons">favorite</span>&nbsp;{post.likes} people liked this
+                    <span className="material-icons">favorite</span>&nbsp;{pluralize(post.likes, "person", "people")} liked this
                     <span style={{ opacity: "0.5" }}>&nbsp;• posted at {fmtTimeString(post.timestamp)}</span>
                 </span>
                 {this.renderComments()}
